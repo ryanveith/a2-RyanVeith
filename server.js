@@ -13,6 +13,8 @@ const appdata = [
   { 'model': 'ford', 'year': 1987, 'mpg': 14} 
 ]
 
+const serverdata = []
+
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
     handleGet( request, response )    
@@ -39,8 +41,38 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
+    const data = JSON.parse( dataString )
+    console.log( data )
     // ... do something with the data here!!!
+    
+    // 3 Letter abbriviation for your username
+    // Derived automatically
+    data.abbriviation = data.username.slice(0,3)
+
+    // Second derived attribute is current ranking compared to other scores
+    // This requires going though data and not only comparing scores but also updating other rankings
+    let placedscore = false
+    for (let index = 0; index < serverdata.length; index++) {
+      console.log(serverdata[index].highscore)
+      if (placedscore) {
+        serverdata[index].ranking = index + 1
+      }
+      else {
+        if (serverdata[index].highscore <= data.highscore) {
+          data.ranking = index + 1
+          serverdata.splice(index, 0, data)
+          placedscore = true
+        }
+      }
+    }
+    if (placedscore == false) {
+      data.ranking = serverdata.length + 1
+      serverdata.push(data)
+    }
+    
+    console.log( data )
+
+    console.log(serverdata)
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
