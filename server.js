@@ -42,7 +42,7 @@ const handlePost = function( request, response ) {
 
   request.on( 'end', function() {
     const data = JSON.parse( dataString )
-    console.log( data )
+    //console.log( data )
     // ... do something with the data here!!!
     
     // 3 Letter abbriviation for your username
@@ -53,7 +53,6 @@ const handlePost = function( request, response ) {
     // This requires going though data and not only comparing scores but also updating other rankings
     let placedscore = false
     for (let index = 0; index < serverdata.length; index++) {
-      console.log(serverdata[index].highscore)
       if (placedscore) {
         serverdata[index].ranking = index + 1
       }
@@ -70,14 +69,11 @@ const handlePost = function( request, response ) {
       serverdata.push(data)
     }
     
-    console.log( data )
-
-    console.log(serverdata)
-
+    // console.log("returning data")
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify(serverdata))
   })
 }
 
