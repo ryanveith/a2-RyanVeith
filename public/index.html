@@ -10,20 +10,26 @@
     <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='enter your name here'>
-      <input type='text' id='username' value='enter your username'>
-      <input type='text' id='highscore' value='enter your score here'>
-      <button>submit</button>
-    </form>
+    <div id="layout">
+      <form class="item">
+        <select id='option'>
+          <option>Add Score</option>
+          <option>Modify Score</option>
+          <option>Delete Score</option>
+        </select>
+        <input type='text' id='username' value='enter your username'>
+        <input type='text' id='highscore' value='enter your score here'>
+        <button>submit</button>
+      </form>
 
-    <section>
-      <h2>Highscores</h2>
-      <ul id = 'scoretable'>
-        <li>
-          No Highscores Yet
-        </li>
-      </ul>
-    </section>
+      <section class="item">
+        <h2 >Highscores</h2>
+        <ul id = 'scoretable'>
+          <li>
+            No Highscores Yet
+          </li>
+        </ul>
+      </section>
+    </div>
   </body>
 </html>
