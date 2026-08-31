@@ -7,13 +7,14 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+const serverdata = [ 
+  { 'username': 'ryan', 'abbriviation': 'RYN', 'highscore': '531', 'date': '2026-08-31'},
+  { 'username': 'There Can Only Be 1', 'abbriviation': 'THE', 'highscore': '488', 'date': '2026-08-31'},
+  { 'username': 'Starbright', 'abbriviation': 'STA', 'highscore': '091', 'date': '2026-08-31'},
+  { 'username': 'Giles Corey', 'abbriviation': 'GIL', 'highscore': '047', 'date': '2026-08-31'},
+  { 'username': 'Bob Smith', 'abbriviation': 'BOB', 'highscore': '004', 'date': '2026-08-31'}
 ]
 
-const serverdata = []
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -46,10 +47,15 @@ const handlePost = function( request, response ) {
     
     // 3 Letter abbriviation for your username
     // Derived automatically
-    data.abbriviation = data.username.slice(0,3).toUpperCase()
+    if (data.username === "ryan") {
+      data.abbriviation = "RYN"
+    }
+    else {
+      data.abbriviation = data.username.slice(0,3).toUpperCase().padStart(3, "-")
+    }
 
     // Make sure score is valid and format it
-    if (Number(data.highscore) === NaN) {
+    if (Number.isNaN(Number(data.highscore))) {
       data.highscore = 0
     }
     if (data.highscore > 999) {
@@ -60,70 +66,58 @@ const handlePost = function( request, response ) {
 
     // Second derived attribute is current ranking compared to other scores
     // This requires going though data and not only comparing scores but also updating other rankings
-    let placedscore = null
+    let indexToPlace = null
     let indexToRemove = null
-    console.log("Start")
     for (let index = 0; index < serverdata.length; index++) {
-      if (data.option !== "Delete Score") {
+      if (data.option !== "Delete Score" && indexToPlace === null) {
         // Check if this is the spot to add the "new" score
         if (Number(serverdata[index].highscore) <= Number(data.highscore)) {
-          data.ranking = index + 1
-          placedscore = index
-          console.log("placed score", index)
+          indexToPlace = index
         }
       }
       if (serverdata[index].username === data.username) {
-        console.log("HI")
         //This score either needs to be updated, removed, or is end of search
-        // Add/Remove/Modify Score
         if (data.option === "Modify Score" || data.option === "Delete Score") {
           // Remove the current score
           indexToRemove = index
         }
-        if (data.option === "Add Score") {
-          if (placedscore !== null) {
+        else if (data.option === "Add Score") {
+          if (indexToPlace !== null) {
             // We already added a score remove the worse one, otherwise don't bother adding a non-highscore
             indexToRemove = index
-            console.log("plan remove")
-            break
           }
-          console.log(index, indexToRemove)
-          placedscore = "Skip This"
-          break
+          else {
+            indexToPlace = "Skip This"
+          } 
         }
       }
-      if (placedscore !== null && indexToRemove !== null) {
-        // No other scores will change so don't bother finishing
-        console.log("DONE")
-        break
-      }
     }
-    if (placedscore === null && (data.option !== "Delete Score")) {
-      // Append new lowscore to bottom of the list
-      data.ranking = serverdata.length + 1
-      serverdata.push(data)
-      placedscore = serverdata.length
-    }
-    else {
-      // Append new scores after we are done iterating though the array
-      if (placedscore === "Skip This") {
+    // Place scores now that we are done iterating
+    if (data.option === "Add Score" || (data.option === "Modify Score" && indexToRemove !== null)){
+      // Place new score
+      if (indexToPlace === "Skip This") {
         // Special case we did not place the score only pretended to since it was not a highscore
-        placedscore = null
-        console.log("WTH")
+        indexToPlace = null
+      }
+      else if (indexToPlace === null) {
+        // Append new lowscore to bottom of the list
+        indexToPlace = serverdata.length
+        data.ranking = indexToPlace + 1
+        serverdata.push(data)
+        
       }
       else {
-        serverdata.splice(placedscore, 0, data)
+        data.ranking = indexToPlace + 1
+        serverdata.splice(indexToPlace, 0, data)
       }
     }
-    // Remove stuff from the array now that we are done iterating though its
+    // Remove scores now that we are done iterating
     if (indexToRemove !== null) {
-      // if this is after we added a index go 1 index further
-      if (placedscore !== null && placedscore <= indexToRemove) {
+      // If this is after we added a index go 1 index further
+      if (indexToPlace !== null && indexToPlace <= indexToRemove) {
         indexToRemove++
-        console.log("hello")
       }
       serverdata.splice(indexToRemove, 1)
-      console.log("REMOVING INDEX", indexToRemove)
     }
     
     // Iterate though the array agian and update rankings
@@ -132,7 +126,7 @@ const handlePost = function( request, response ) {
     for (let index = 0; index < serverdata.length; index++) {
       serverdata[index].ranking = index + 1
     }
-
+    
     // console.log("returning data")
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
 

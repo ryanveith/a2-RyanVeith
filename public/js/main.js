@@ -34,7 +34,7 @@ const submit = async function( event ) {
       else if (i == 2) {
         ending = "rd"
       }
-      dataToDisplay += `<li> ${data[i].ranking}${ending} Player: ${data[i].abbriviation} Score: ${data[i].highscore} on ${data[i].date} by ${data[i].username}</li>`
+      dataToDisplay += `<li> ${data[i].ranking}${ending} place Player: ${data[i].abbriviation} Score: ${data[i].highscore} on ${data[i].date} by ${data[i].username}</li>`
   }
   // Overwrite the displayed scoretable with the updated version after it returns
   document.getElementById('scoretable').innerHTML = dataToDisplay
@@ -42,5 +42,5 @@ const submit = async function( event ) {
 
 window.onload = function() {
   const button = document.querySelector('button')
-  button.onclick = submit
+  button.onclick = submit 
 }
