@@ -61,6 +61,9 @@ const handlePost = function( request, response ) {
     if (data.highscore > 999) {
       data.highscore = 999
     }
+    if (data.highscore < 0) {
+      data.highscore = 0
+    }
     data.highscore = String(data.highscore).padStart(3, "0")
 
 
