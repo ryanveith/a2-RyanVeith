@@ -3,6 +3,12 @@ body {
   background:black;
   color:white;
 }
+ul {
+  list-style: none;
+}
+li {
+  margin: 2%;
+}
 
 #layout {
   background-color: blueviolet;

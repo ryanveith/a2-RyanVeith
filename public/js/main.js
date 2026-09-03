@@ -1,4 +1,5 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
+//let ul = null
 
 const submit = async function( event ) {
   // stop form submission from trying to load
@@ -23,6 +24,10 @@ const submit = async function( event ) {
   console.log("here")
   const data  = JSON.parse(text)
   let dataToDisplay = ""
+  // You could also do this with innerText, but I am using innerHTML
+  // The for right now this will work method we discussed in class
+  //ul = document.getElementById('scoretable')
+  //ul.innerHTML = ""
   for (let i = 0; i < data.length; i++) {
     let ending = "th"
       if (i == 0) {
@@ -34,10 +39,15 @@ const submit = async function( event ) {
       else if (i == 2) {
         ending = "rd"
       }
+
+      // const li = document.createElement('li')
+      // li.innerText = item.yourname
+      // ul.appendChild(li)
+      // Should probably add a string.replaceAll to prevent <script> from being inserted
       dataToDisplay += `<li> ${data[i].ranking}${ending} place Player: ${data[i].abbriviation} Score: ${data[i].highscore} on ${data[i].date} by ${data[i].username}</li>`
   }
   // Overwrite the displayed scoretable with the updated version after it returns
-  document.getElementById('scoretable').innerHTML = dataToDisplay
+  document.getElementById('scoretable').innerHTML = dataToDisplay.replaceAll(/(<[^l][^i][^>])|([^<][^l][^i]>)/g, "")
 }
 
 window.onload = function() {

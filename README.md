@@ -98,3 +98,12 @@ Include a very brief summary of your project here. Be sure to include the CSS po
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 
+
+1. Provide the last name of each student you conduct the evaluation with.
+Newman
+2. What problems did the user have with your design?
+He disliked the how the fill in the blank box instruction text had to be deleted. 
+3. What comments did they make that surprised you?
+He also commented on the black pink and blue color scheme which suprised  me a bit even though I know it is not exactly normal.
+4. What would you change about the interface based on their feedback?
+I would set the instruciton text to use placeholder text instead of having it have an instruction value
