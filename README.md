@@ -1,4 +1,4 @@
-## Your Web Application Title
+## Arcade Style Soring Database
 This project was inspired by the arcade scoreboards, so I created a simple way to store highscores from for different users. The game is not included in this project but you can have fun inserting, modifying and deleteing scores.
 For positioning I used a flexbox set to diplay stuff in a row with space evenly since I wanted the scores to be visible ajacent to the "form" to imput new ones. Since this is arcade inspired the font was specifcly chosen so all characters take up the same space to allign the scores. 
 The link to the website on render is: https://a2-shortstack-eqab.onrender.com/ 
